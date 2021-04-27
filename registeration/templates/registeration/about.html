@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8/">
+    <title>About us</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'emdb/css/about.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'emdb/css/pagestyle.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Courgette' rel='stylesheet'>
+     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+ </head>
+ <body>
+
+   <ul>
+       <li><a href="home">BlueCrate</a></li>
+      <li><a href="{% url 'movies:home' %}">Home</a></li>
+		  <li><a href="{% url 'movies:browse' %}">Browse</a></li>
+       <li class="active"><a href="/about">About</a></li>
+        {% if user.is_authenticated %}
+      <li style="float:right" ><a href="{% url 'registeration:logout' %}">Logout</a></li>
+      <li style="float:right" class="active"><a href="{% url 'registeration:profile' %}">{{ user.first_name }}</a></li>
+       {% else %}
+		<li style="float:right"><a href="{% url 'registeration:login' %}">Login</a></li>
+       {% endif %}
+   </ul>
+			
+		  	<br><br>
+			<h1 style="color: #FFFFFF;text-align: center;">This website is still in the works of offering the latest international movies</h1>
+			<h3 style="color: #FFFFFF;text-align: center;">Feel free to browse our movie collection and leave your review!<br>
+        </h3>
+    <br><br>
+				
+   <h1 style=" color: #FFFFFF;text-align: center;" > Developed by : </h1>
+				
+				<div class="card" style="margin-left:350px;">
+       <img src= "{% static 'emdb/img/default_avatar.jpg' %}" style="width:100%;height:320px; ">
+       <h1>Marin Daniel-Ionut </h1>
+      <p>1222B, FILS</p>
+      <div class="k">
+          <div class="p"><a  class="p1" href="https://www.facebook.com"> <img  class="p6" src="{% static 'emdb/img/facebook-3-32.png' %}" alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://www.instagram.com"> <img  class="p5"src="{% static 'emdb/img/instagram-24.png' %}"alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://twitter.com"> <img  class="p5" src="{% static 'emdb/img/twitter-24.png' %}" alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://www.linkedin.com/uas/login"> <img  class="p5"src="{% static 'emdb/img/linkedin-5-24.png' %}" alt="HTML tutorial" ></a></div>
+
+       </div>    
+				</div>
+				
+				
+
+								
+								
+								
+					<div class="card">
+						<div>
+       <img src="{% static 'emdb/img/default_avatar.jpg' %}"  style="width:100%;height:320px;">
+       <h1>Trifan Andrei</h1>
+       <p>1222B, FILS</p>
+							</div>
+      <div class="k">
+          <div class="p"><a  class="p1" href="https://www.facebook.com"> <img  class="p6" src="{% static 'emdb/img/facebook-3-32.png' %}" alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://www.instagram.com/accounts/login//"> <img  class="p5"src="{% static 'emdb/img/instagram-24.png' %}"alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://twitter.com/?lang=en"> <img  class="p5" src="{% static 'emdb/img/twitter-24.png' %}" alt="HTML tutorial" ></a></div>
+          <div class="p"><a  class="p2" href="https://www.linkedin.com/uas/login"> <img  class="p5"src="{% static 'emdb/img/linkedin-5-24.png' %}" alt="HTML tutorial" ></a></div>
+
+       </div>
+       
+                    </div>
+      
+      
+    </body>
+    
+    
+    
+    
+    
+</html>

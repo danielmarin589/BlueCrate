@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title> Movie Details</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'emdb/css/pagestyle.css'%}">  
+    <link rel="stylesheet" type="text/css" href="{% static 'movies/css/moviestyle.css'%}">
+      <link href='https://fonts.googleapis.com/css?family=Courgette' rel='stylesheet'>
+      <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    	/>
+    <style type="text/css">
+			/* Next & previous buttons */
+			.prev, .next {
+				cursor: pointer;
+				position: absolute;
+				top: 50%;
+				width: auto;
+				padding: 16px;
+				margin-top: 4%;
+				color: white;
+				font-weight: bold;
+				font-size: 18px;
+				transition: 0.6s ease;
+				border-radius: 0 3px 3px 0;
+			}
+
+			.logo {
+  				font-weight: bold;
+
+  				color: rgb(20, 43, 77);
+			}
+
+            .footer {
+				  display: grid;
+				  margin: auto; /* will be placed in cernter*/
+				  grid-template-columns: 1fr 1fr 1fr 1fr;
+				  /*4 collumns with min width of 20 px and max width of 300px*/
+				  justify-content: center;
+				  grid-template-rows: 2fr 1fr;
+				  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85)) border-box,
+					/* url(https://source.unsplash.com/2048x1080/?movie) no-repeat center center; */
+					url(images/cinema.jfif) no-repeat center center;
+				  color: #ffffff;
+				  background-size: cover;
+				}
+
+							.footer > div {
+  				padding: 20px;
+				}
+
+			/* Position the "next button" to the right */
+			.next {
+			  right: 0;
+			  border-radius: 3px 0 0 3px;
+			}
+			.prev{
+				left:0;
+			}
+
+			/* On hover, add a black background color with a little bit see-through */
+			.prev:hover, .next:hover {
+				background-color: rgba(0,0,0,0.8);
+				font-size: 25px;
+			}
+		</style>
+
+  </head>
+  <body>
+
+    <ul>
+      <li>
+				<a href="{% url 'movies:home' %}"><div class="logo">
+        		<i class="fas fa-film"></i> <strong>Blue Crate</strong>
+      </div>
+			</a></li>
+<!--        <li><a href="{% url 'movies:home' %}">BlueCrate</a></li>-->
+		  <li><a href="{% url 'movies:home' %}">Home</a></li>
+          <li><a href="{% url 'movies:browse' %}">Browse</a></li>
+		  <li><a href="/about">About</a></li>
+		  {% if user.is_authenticated %}
+                <li style="float:right" ><a href="{% url 'registeration:logout' %}">Logout</a></li>
+                <li style="float:right" ><a href="{% url 'registeration:profile' %}">{{ user.first_name }}</a></li>
+            {% else %}
+                <li style="float:right"><a href="{% url 'registeration:login' %}">Login</a></li>
+            {% endif %}
+    </ul>
+
+
+    <div class="grid-container">
+      <div class="item1">
+        <h1 class="sub-textbox">{{movie.name}}</h1>
+        <h2>★</h2>
+        <h4 class="sub-textbox">{{ movie.rate }}/10</h4>
+        <img class="Movie-photo" src="{{ movie.movie_logo }}" />
+      </div>
+      <div class="item2"><iframe class="video" src="{{ movie.trailer_url }}"></iframe></div>
+    </div>
+    <hr><br>
+    <div class="details">
+      <h4 class="sub-textbox" style="text-decoration: underline;">Storyline :</h4>
+      <p class="body-textbox">{{ movie.description }}</p>
+      <hr><br>
+
+      <h4 class="sub-textbox"style="text-decoration: underline;">Director :</h4>
+        {% for director in directors %}
+      <div class="cast">
+        <div class="chip">
+          <img src="{{ director.photo }}" alt="Person" width="96" height="96">
+          {{ director.name }}
+        </div><br><br>
+      </div>
+        {% endfor %}
+      <h4 class="sub-textbox"style="text-decoration: underline;">Writer :</h4>
+        {% for writer in writers %}
+      <div class="cast">
+        <div class="chip">
+          <img src="{{ writer.photo }}" alt="Person" width="96" height="96">
+          {{ writer.name }}
+        </div><br><br>
+      </div>
+        {% endfor %}
+
+      <hr><br>
+      <h4 class="sub-textbox" style="text-decoration: underline;">Cast :</h4>
+      <div class="cast">
+          {% for actor in actors %}
+        <div class="chip">
+          <img src="{{ actor.photo }}" alt="Person" width="96" height="96">
+          {{ actor.name }}
+        </div><br><br>
+          {% endfor %}
+
+      </div>
+    </div><hr>
+
+    <div class="commintsList">
+      <h4 class="sub-textbox" style="text-decoration: underline;">Comments :</h4>
+      {% for r in reviews %}
+      <div style="padding:4%;">
+        <div>
+        <h4 class="body-textbox"style="text-decoration: underline;float:left">{{r.created_by.first_name}} {{r.created_by.last_name}}</h4>
+        <p class="body-textbox" style="margin-left:50%;float:left; margin-right: 5%">★{{r.rate}}/5</p>
+        </div>
+        <div>
+        <p class="body-textbox">{{r.comment}}</p>
+        </div>
+      </div><hr><br>
+      {% endfor %}
+    </div>
+
+
+    <form class="review" action="/review/{{movie.pk}}/add_review/" method="post"><br>
+      {% csrf_token %}
+      <div class="comment">
+        <h4 class="body-textbox">Comment :</h4>
+        <textarea rows="7" name="comment" type="text">{{review.comment}}</textarea>
+      </div><br>
+      <div class="rating">
+        <legend class="body-textbox">Rate:</legend>
+        <input type="radio" name="rate" type="number" id="star5"  value="5" checked /><label for="star5"></label>
+        <input type="radio" name="rate" type="number" id="star4"  value="4" /><label for="star4"></label>
+        <input type="radio" name="rate" type="number" id="star3"  value="3" /><label for="star3"></label>
+        <input type="radio" name="rate" type="number" id="star2"  value="2" /><label for="star2"></label>
+        <input type="radio" name="rate" type="number" id="star1"  value="1" /><label for="star1"></label>
+			</div>
+      <button type="submit" class="button">Submit</button>
+    </form>
+
+
+
+  </body>
+
+  </html>
